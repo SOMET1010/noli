@@ -29,7 +29,7 @@ export function UserHistoryTab() {
     <div className="space-y-6">
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
       >
@@ -56,7 +56,7 @@ export function UserHistoryTab() {
       {/* Filtres */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.1 }}
         className="flex items-center gap-2 flex-wrap"
       >
@@ -79,7 +79,7 @@ export function UserHistoryTab() {
       {/* État vide amélioré avec timeline */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.15 }}
         className="rounded-xl border border-dashed bg-card/40"
       >

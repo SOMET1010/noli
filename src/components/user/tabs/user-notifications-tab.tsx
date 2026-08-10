@@ -155,7 +155,7 @@ export function UserNotificationsTab() {
       {/* Header */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
@@ -194,7 +194,7 @@ export function UserNotificationsTab() {
       {!loading && notifications.length === 0 && (
         <motion.div
           initial={{ y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
           className="text-center py-20"
         >
@@ -214,7 +214,7 @@ export function UserNotificationsTab() {
       {!loading && notifications.length > 0 && (
         <motion.div
           initial={{ y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
           className="space-y-3"
         >

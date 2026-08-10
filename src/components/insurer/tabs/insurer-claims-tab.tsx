@@ -32,7 +32,7 @@ export function InsurerClaimsTab() {
       {/* Header */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <h2 className="text-2xl font-bold">Sinistres</h2>
@@ -44,7 +44,7 @@ export function InsurerClaimsTab() {
       {/* Bannière info améliorée */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.05 }}
         className="flex items-start gap-3 rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50/80 to-amber-50/30 p-4 dark:border-amber-900 dark:from-amber-950/30 dark:to-transparent"
       >
@@ -63,7 +63,7 @@ export function InsurerClaimsTab() {
       {/* Barre de recherche */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.1 }}
         className="relative"
       >
@@ -79,7 +79,7 @@ export function InsurerClaimsTab() {
       {/* KPIs */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4, delay: 0.15 }}
         className="grid grid-cols-1 sm:grid-cols-3 gap-4"
       >
@@ -121,7 +121,7 @@ export function InsurerClaimsTab() {
       {/* État vide amélioré */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.2 }}
         className="rounded-xl border border-dashed bg-card/40"
       >

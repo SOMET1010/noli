@@ -22,7 +22,7 @@ export function UserReviewsTab() {
     <div className="space-y-6">
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <h2 className="text-xl font-bold">Mes Avis</h2>
@@ -34,7 +34,7 @@ export function UserReviewsTab() {
       {/* État vide */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.1 }}
         className="rounded-xl border border-dashed bg-card/40 p-10 text-center"
       >

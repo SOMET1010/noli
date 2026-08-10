@@ -197,14 +197,14 @@ export function UserProfileTab() {
 
   return (
     <div className="space-y-6">
-      <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+      <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4 }}>
         <h2 className="text-xl font-bold">Mon Profil</h2>
         <p className="text-muted-foreground text-sm mt-1">Gérez vos informations personnelles et votre sécurité.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile card */}
-        <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+        <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
           <Card className="bg-card rounded-xl border">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <div className="relative mb-4">
@@ -247,7 +247,7 @@ export function UserProfileTab() {
         {/* Forms */}
         <div className="lg:col-span-2 space-y-6">
           {/* Personal info */}
-          <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+          <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
             <Card className="bg-card rounded-xl border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -287,7 +287,7 @@ export function UserProfileTab() {
           </motion.div>
 
           {/* Change password */}
-          <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}>
+          <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}>
             <Card className="bg-card rounded-xl border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">

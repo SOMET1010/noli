@@ -62,7 +62,7 @@ export function UserPaymentsTab() {
     <div className="space-y-6">
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <h2 className="text-xl font-bold">Paiements</h2>
@@ -74,7 +74,7 @@ export function UserPaymentsTab() {
       {/* Récapitulatif */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.1 }}
         className="grid grid-cols-1 sm:grid-cols-3 gap-4"
       >
@@ -104,7 +104,7 @@ export function UserPaymentsTab() {
       {/* État vide */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.15 }}
         className="rounded-xl border border-dashed bg-card/40 p-8 text-center"
       >
@@ -120,7 +120,7 @@ export function UserPaymentsTab() {
       {/* Moyens de paiement améliorés */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
       >
         <h3 className="text-base font-semibold mb-4">Moyens de paiement acceptés</h3>
@@ -148,7 +148,7 @@ export function UserPaymentsTab() {
       {/* Préférences de paiement */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4, delay: 0.25 }}
       >
         <Card className="rounded-xl border bg-card">

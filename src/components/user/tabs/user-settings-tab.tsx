@@ -102,14 +102,14 @@ export function UserSettingsTab() {
 
   return (
     <div className="space-y-6">
-      <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+      <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4 }}>
         <h2 className="text-xl font-bold">Paramètres</h2>
         <p className="text-muted-foreground text-sm mt-1">Configurez votre compte et vos préférences.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Account settings */}
-        <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+        <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
           <Card className="bg-card rounded-xl border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -187,7 +187,7 @@ export function UserSettingsTab() {
         </motion.div>
 
         {/* Security */}
-        <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+        <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
           <Card className="bg-card rounded-xl border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -237,7 +237,7 @@ export function UserSettingsTab() {
       </div>
 
       {/* Danger zone */}
-      <motion.div initial={{ y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}>
+      <motion.div initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}>
         <Card className="border-destructive/30 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg text-destructive">

@@ -105,7 +105,7 @@ export function UserDocumentsTab() {
     <div className="space-y-6">
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <h2 className="text-xl font-bold">Mes Documents</h2>
@@ -117,7 +117,7 @@ export function UserDocumentsTab() {
       {/* Attestations de vos contrats actifs */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
       >
         <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
@@ -188,7 +188,7 @@ export function UserDocumentsTab() {
       {/* Types de documents disponibles */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
       >
         <h3 className="text-base font-semibold mb-4">Types de documents disponibles</h3>

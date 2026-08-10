@@ -32,7 +32,7 @@ export function InsurerContractsTab() {
       {/* Header */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <h2 className="text-2xl font-bold">Contrats</h2>
@@ -44,7 +44,7 @@ export function InsurerContractsTab() {
       {/* Bannière info plus visuelle */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.05 }}
         className="flex items-start gap-3 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50/80 to-blue-50/30 p-4 dark:border-blue-900 dark:from-blue-950/30 dark:to-transparent"
       >
@@ -63,7 +63,7 @@ export function InsurerContractsTab() {
       {/* Ligne de recherche */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.1 }}
         className="relative"
       >
@@ -79,7 +79,7 @@ export function InsurerContractsTab() {
       {/* KPIs */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4, delay: 0.15 }}
         className="grid grid-cols-1 sm:grid-cols-3 gap-4"
       >
@@ -121,7 +121,7 @@ export function InsurerContractsTab() {
       {/* État vide amélioré */}
       <motion.div
         initial={{}}
-        animate={{ opacity: 1 }}
+        animate={{}}
         transition={{ duration: 0.4, delay: 0.2 }}
         className="rounded-xl border border-dashed bg-card/40"
       >

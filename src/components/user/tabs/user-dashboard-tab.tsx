@@ -127,7 +127,7 @@ export function UserDashboardTab() {
       {/* Greeting */}
       <motion.div
         initial={{ y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <h2 className="text-2xl font-bold">Bonjour, {firstName} 👋</h2>
@@ -144,7 +144,7 @@ export function UserDashboardTab() {
             <motion.div
               key={stat.label}
               initial={{ y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={{ y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.05 }}
             >
               <Card className="rounded-xl border bg-card">
@@ -171,7 +171,7 @@ export function UserDashboardTab() {
         {/* Recent Activity */}
         <motion.div
           initial={{ y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ y: 0 }}
           transition={{ duration: 0.4, delay: 0.2 }}
           className="lg:col-span-2"
         >
@@ -247,7 +247,7 @@ export function UserDashboardTab() {
         {/* Quick Actions */}
         <motion.div
           initial={{ y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ y: 0 }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
           <h3 className="text-lg font-semibold mb-4">Actions rapides</h3>

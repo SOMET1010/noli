@@ -96,7 +96,7 @@ export function UserPaymentsTab() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="rounded-xl border bg-gradient-to-br from-green-50 to-green-50/30 dark:from-green-950/20 dark:to-transparent">
           <CardContent className="p-5">
-            <p className="text-xs text-muted-foreground mb-1">Prime annuelle totale</p>
+            <p className="text-xs text-muted-foreground mb-1">Prime mensuelle totale</p>
             <p className="text-lg font-bold tabular-nums">{formatFCFA(totalPremium)}</p>
             <p className="text-xs text-muted-foreground mt-1">
               {active.length > 0 ? `${active.length} contrat${active.length > 1 ? "s" : ""} actif${active.length > 1 ? "s" : ""}` : "Aucun contrat actif"}
@@ -149,7 +149,7 @@ export function UserPaymentsTab() {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-sm font-semibold tabular-nums">{formatFCFA(c.premium)}</p>
-                  <p className="text-xs text-muted-foreground">/ an</p>
+                  <p className="text-xs text-muted-foreground">/ mois</p>
                 </div>
               </CardContent>
             </Card>

@@ -40,11 +40,24 @@ for select
 to authenticated
 using ((select auth.uid()) = profile_id);
 
+-- Défense en profondeur : non seulement le sinistre doit porter son propre
+-- profile_id, mais le contrat référencé doit lui appartenir ET son insurer_id
+-- doit correspondre à celui du contrat (empêche un contract_id/insurer_id forgé
+-- si un jour une écriture via clé anon est ajoutée).
 create policy "Users can create their own claims"
 on public.claims
 for insert
 to authenticated
-with check ((select auth.uid()) = profile_id);
+with check (
+  (select auth.uid()) = profile_id
+  and exists (
+    select 1
+    from public.contracts
+    where contracts.id = claims.contract_id
+      and contracts.profile_id = (select auth.uid())
+      and contracts.insurer_id = claims.insurer_id
+  )
+);
 
 -- RLS : l'assureur voit les sinistres liés à ses contrats.
 create policy "Insurers can view claims on their contracts"

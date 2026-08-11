@@ -6,6 +6,19 @@
 
 ---
 
+> **Mise à jour (post-audit).** Les onglets décrits ci-dessous comme des
+> « placeholders » / « vitrines » ont depuis été **branchés sur la base** et sont
+> désormais **fonctionnels** : **Contrats** et **Clients** (assureur),
+> **Sinistres** (client + assureur), **Paiements** (client, primes des contrats)
+> et **Mes Avis** (client, qui affichait de **faux avis codés en dur** —
+> désormais de vrais avis issus de la table `reviews`). Ces ajouts s'appuient sur
+> les nouvelles tables `reviews` et `claims` (RLS activée) et leurs routes API
+> (isolation par assureur / propriété par client). Les tableaux « État » et
+> « Placeholders » ci-après reflètent l'audit initial ; se reporter à
+> `docs/RECETTE_FONCTIONNELLE_2.0.0.md` (§4) pour l'état à jour.
+
+---
+
 ## 1. Architecture générale
 
 ### 1.1 SPA à vue unique (catch-all)

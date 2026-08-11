@@ -4,6 +4,39 @@
 
 Plateforme de comparaison d'assurances multi-assureurs avec interface admin, espace utilisateur et tableau de bord assureur.
 
+## Fonctionnalités
+
+3 espaces (client, assureur, admin) au-dessus d'un cœur de comparaison/devis
+multi-assureurs. La plateforme s'appuie sur une base **Supabase / Postgres**
+(23 tables, 27 migrations SQL) et **71 routes API**.
+
+- **Cœur métier** : comparaison en 3 étapes, moteur de tarification, catalogue
+  d'offres, devis.
+- **Espace admin** : assureurs, catégories, offres, garanties (wizard de calcul),
+  devis, rappels, journaux d'audit, sauvegardes, rôles & permissions, paramètres.
+- **Espace assureur** : tableau de bord, offres, garanties, devis reçus, rappels,
+  **Contrats** et **Clients** (nouveau).
+- **Espace client** : devis, contrats, documents, notifications, profil,
+  **Mes Avis**, **Paiements** et **Sinistres** (nouveau).
+
+Fonctionnalités ajoutées récemment (auparavant écrans « vitrines », désormais
+branchées sur la base) :
+
+| Fonctionnalité | Espace | Description |
+|---|---|---|
+| **Contrats** | Assureur | Liste des contrats de l'assureur (isolation par `insurer_id`). |
+| **Clients** | Assureur | Clients de l'assureur dérivés des devis/contrats. |
+| **Mes Avis** | Client | Notation (1–5) + commentaire d'un assureur, 1 avis par assureur (upsert), table `reviews` + RLS. |
+| **Paiements** | Client | Suivi des primes des contrats (table `contracts`, champ `premium`). |
+| **Sinistres** | Client / Assureur | Déclaration client sur un contrat et traitement/suivi de statut par l'assureur, table `claims` + RLS. |
+
+## Documentation
+
+La documentation détaillée (recette fonctionnelle, audits de sécurité,
+déploiement, calcul des prix, plan d'industrialisation, sauvegarde/DR) se trouve
+dans le dossier [`docs/`](docs/). Voir aussi [`deploiement.md`](deploiement.md)
+et [`comptes-test.md`](comptes-test.md).
+
 ## Stack
 
 - **Framework** : Next.js 16 (App Router)
@@ -34,7 +67,7 @@ Les migrations SQL (schéma + policies RLS) se trouvent dans
 
 | Commande | Description |
 |----------|-------------|
-| `npm dev` | Lance le serveur de développement |
+| `npm run dev` | Lance le serveur de développement |
 | `npm run build` | Build de production |
 | `npm run test` | Exécute les tests unitaires |
 | `npm run test:coverage` | Exécute les tests avec rapport de couverture |

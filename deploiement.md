@@ -41,6 +41,13 @@ npx supabase migration list   # migrations appliquées vs en attente
 npx supabase db push          # appliquer les nouvelles migrations
 ```
 
+> ⚠️ **Nouvelles migrations à appliquer** (fonctionnalités Avis & Sinistres) :
+> `20260810130000_reviews.sql` (table `reviews` + RLS) et
+> `20260810140000_claims.sql` (table `claims` + RLS). Après un `git pull`,
+> lancer `npx supabase db push` pour les appliquer, sinon les onglets
+> **Mes Avis** (client) et **Sinistres** (client/assureur) renverront des
+> erreurs (tables absentes). Total attendu : **27 migrations**.
+
 Edge Function (notifications) :
 
 ```bash

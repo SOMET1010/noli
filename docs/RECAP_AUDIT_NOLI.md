@@ -66,3 +66,19 @@ Elle contient exactement les 5 commits manquants (dernier : `e45b024`).
 - Points produit mineurs (dans `RECETTE_FONCTIONNELLE_2.0.0.md`) : « Demander un
   devis » qui ne pré-remplit pas l'offre, « Contrats actifs », KPI Notifications,
   pagination des devis assureur.
+
+---
+
+## 🆕 Mise à jour — nouvelles fonctionnalités & contre-audit
+
+Depuis ce récap, **5 fonctionnalités** ont été livrées (onglets auparavant
+« vitrines », désormais fonctionnels) : **Contrats** et **Clients** (assureur),
+**Mes Avis** et **Paiements** (client), **Sinistres** (déclaration client +
+traitement assureur). La base compte désormais **23 tables**, **27 migrations**
+(dont `reviews` et `claims`), **71 routes API** et **138 tests** verts.
+
+Un **contre-audit récent** confirme que la **sécurité des nouvelles routes est
+OK** : **isolation par assureur** (contrats/clients/sinistres filtrés sur
+`insurer_id`, identité tirée de la session), propriété côté client vérifiée, et
+**RLS activée sur `reviews` et `claims`**. Détails : recette 4e passe dans
+`RECETTE_FONCTIONNELLE_2.0.0.md` (§4) et note §7 de `AUDIT_SECURITE_2.0.0.md`.

@@ -159,3 +159,78 @@ validation (des tests verrouillent le comportement actuel).
 
 > ⚠️ Les correctifs 17-18 touchent le **routage/session** : à **confirmer en
 > recette live** (liens directs, expiration de session, navigation retour).
+
+---
+
+# 4e passe — recette des 5 nouvelles fonctionnalités
+
+Les onglets auparavant « vitrines » (placeholders sans appel API) sont désormais
+**branchés sur la base**. Cette passe recette les 5 fonctionnalités ajoutées
+récemment. Base : **Supabase / Postgres** (23 tables, 27 migrations), **71 routes
+API**, **138 tests** verts. Nouvelles migrations : `20260810130000_reviews.sql`
+et `20260810140000_claims.sql` (à appliquer via `supabase db push`).
+
+## 4.1 Contrats (assureur) — `InsurerContractsTab`
+
+- Route `GET /api/insurer/contracts` — `requireAuth(["INSURER"])`, identité tirée
+  de la session (`getInsurerAccount`), filtre `eq("insurer_id", account.insurerId)`.
+- Recette : un assureur ne voit **que ses propres contrats** (isolation par
+  `insurer_id`). Champs exposés : `reference`, `status`, `start_date`, `end_date`,
+  `premium`, `created_at`. ✅ Onglet fonctionnel (plus de KPI à 0).
+
+## 4.2 Clients (assureur) — `InsurerClientsTab`
+
+- Route `GET /api/insurer/clients` — `requireAuth(["INSURER"])`. Les clients sont
+  **dérivés** des devis (`quotes` joints à `insurance_offers!inner` filtrés sur
+  `offer.insurer_id`) **et** des contrats (`contracts.profile_id` filtrés sur
+  `insurer_id`), puis dédupliqués.
+- Recette : la liste ne contient que les clients ayant interagi avec l'assureur
+  connecté — pas de fuite inter-assureurs. ✅ Onglet fonctionnel (plus de table
+  vide « Aucun client trouvé »).
+
+## 4.3 Mes Avis (client) — `UserReviewsTab`
+
+- Table `reviews` (migration `20260810130000_reviews.sql`) : note `1–5`
+  (`reviews_rating_check`), commentaire optionnel, **1 avis par (client, assureur)**
+  (`reviews_unique_per_insurer`), RLS activée.
+- Routes : `GET /api/reviews` (avis du client connecté, join `insurers`),
+  `POST /api/reviews` — validation `rating` entier 1–5, `upsert` sur
+  `(profile_id, insurer_id)` (un avis modifiable, pas de doublon).
+- Recette : les **faux avis codés en dur** (« Jean Dupont », « SAHAM »…) signalés
+  dans l'audit d'interfaces sont **remplacés par de vrais avis** issus de la base.
+  Note hors bornes → 400. Deux soumissions sur le même assureur → mise à jour
+  (pas de second avis). ✅ Correctif de confiance/compliance appliqué.
+
+## 4.4 Paiements (client) — `UserPaymentsTab`
+
+- Pas de table dédiée : l'onglet lit `GET /api/user/contracts` et affiche les
+  **primes des contrats** (`premium`) du client (échéances/paiements dérivés des
+  contrats). ✅ Onglet fonctionnel (plus de totaux figés à 0).
+- Recette : les montants affichés correspondent aux `premium` réels des contrats
+  du client connecté ; propriété vérifiée côté route (`profile_id` = session).
+
+## 4.5 Sinistres (client + assureur) — `User*` / `InsurerClaimsTab`
+
+- Table `claims` (migration `20260810140000_claims.sql`) : `reference`
+  (`NOLI-SIN-XXXXXX`, unique), `contract_id`, `profile_id`, `insurer_id`, `type`
+  (`ACCIDENT | VOL | BRIS_GLACE | INCENDIE | AUTRE`), `description`,
+  `incident_date`, `status` (`SUBMITTED | IN_REVIEW | APPROVED | REJECTED |
+  CLOSED`, `claims_status_check`), RLS activée.
+- **Déclaration client** : `POST /api/claims` — auth requise, `contractId` valide
+  et **appartenant au client** (contrat introuvable → 404), `type` dans la liste,
+  `description` ≥ 10 caractères, `incident_date` valide si fournie ; création en
+  statut `SUBMITTED`. `GET /api/claims` = sinistres du client connecté.
+- **Traitement assureur** : `GET /api/insurer/claims` filtré sur
+  `eq("insurer_id", account.insurerId)` ; `PUT /api/insurer/claims/[id]/status` —
+  `requireAuth(["INSURER"])`, statut validé contre `VALID_STATUSES`, contrôle
+  d'appartenance (`claim.insurerId === account.insurerId`, sinon **403** « Ce
+  sinistre ne concerne pas vos contrats »).
+- Recette : un client ne déclare un sinistre que sur **ses** contrats ; un
+  assureur ne voit et ne fait évoluer le statut que des sinistres de **ses**
+  contrats. Statut invalide → 400. ✅ Onglets Sinistres fonctionnels (plus de
+  KPI/workflow décoratifs).
+
+## Vérification (4e passe)
+`tsc` **0** · `eslint` **0** · `vitest` **138 tests** · `next build` **OK**.
+Sécurité des nouvelles routes : voir la note de contre-audit dans
+`AUDIT_SECURITE_2.0.0.md` et `RECAP_AUDIT_NOLI.md`.

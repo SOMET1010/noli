@@ -100,3 +100,27 @@ Aucune vulnérabilité exploitable identifiée.
 build OK, modèle d'auth centralisé et correctement appliqué, protections IDOR et
 CSRF en place. Les seuls éléments restants sont des **nettoyages mineurs** relevant
 de décisions produit, pas des correctifs de sécurité urgents.
+
+---
+
+## 7. Note de mise à jour — contre-audit des nouvelles fonctionnalités
+
+Un **contre-audit récent** a couvert les 5 fonctionnalités ajoutées depuis
+(Contrats et Clients assureur, Mes Avis, Paiements et Sinistres client/assureur)
+et leurs routes API. Périmètre étendu à **71 routes**, **23 tables**, **27
+migrations**, **138 tests**. Verdict : **sécurité des nouvelles routes OK**, dans
+la continuité du modèle existant.
+
+- **Isolation par assureur** confirmée : `insurer/contracts`, `insurer/clients`,
+  `insurer/claims` et `insurer/claims/[id]/status` tirent l'identité de la session
+  (`getInsurerAccount`) et filtrent/vérifient sur `insurer_id` — un assureur ne
+  voit et ne modifie que **ses** contrats, clients et sinistres (mise à jour de
+  statut avec contrôle d'appartenance → **403** sinon).
+- **Propriété côté client** confirmée : `claims` (POST/GET) et `reviews` (GET/POST)
+  contrôlent `profile_id = session` ; déclaration de sinistre restreinte aux
+  contrats du client ; avis en `upsert` sur `(profile_id, insurer_id)` (pas de
+  doublon), note bornée 1–5.
+- **RLS** activée sur les nouvelles tables `reviews` et `claims`
+  (migrations `20260810130000_reviews.sql` et `20260810140000_claims.sql`).
+
+Aucune faille d'accès introduite par ces ajouts. Le verdict §6 reste valable.

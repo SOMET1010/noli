@@ -39,7 +39,6 @@ export async function POST(request: NextRequest) {
     const contractId = Number(body.contractId);
     const type = String(body.type || "").toUpperCase();
     const description = typeof body.description === "string" ? body.description.trim().slice(0, 2000) : "";
-    const incidentDate = typeof body.incidentDate === "string" && body.incidentDate ? body.incidentDate : null;
 
     if (!Number.isInteger(contractId) || contractId <= 0) {
       return NextResponse.json({ error: "Contrat invalide" }, { status: 400 });
@@ -49,6 +48,16 @@ export async function POST(request: NextRequest) {
     }
     if (description.length < 10) {
       return NextResponse.json({ error: "Merci de décrire le sinistre (au moins 10 caractères)." }, { status: 400 });
+    }
+
+    // Date facultative mais, si fournie, doit être une date valide (format AAAA-MM-JJ)
+    // — sinon on renvoie un 400 propre plutôt qu'une erreur base (500).
+    let incidentDate: string | null = null;
+    if (typeof body.incidentDate === "string" && body.incidentDate) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(body.incidentDate) || Number.isNaN(new Date(body.incidentDate).getTime())) {
+        return NextResponse.json({ error: "Date du sinistre invalide" }, { status: 400 });
+      }
+      incidentDate = body.incidentDate;
     }
 
     // Autorisation : le contrat doit appartenir au client.

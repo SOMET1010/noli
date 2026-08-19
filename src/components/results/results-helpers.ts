@@ -2,7 +2,8 @@ import { resolveCoverageName } from "@/lib/constants";
 import type { InsurerOffer, PricingBreakdown } from "@/types";
 
 /** Normalise un nom de garantie (accents, casse, séparateurs) pour comparaison. */
-export function normalizeGuaranteeName(name: string): string {
+export function normalizeGuaranteeName(name: string | null | undefined): string {
+  if (!name) return "";
   return name
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")

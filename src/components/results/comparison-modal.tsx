@@ -66,7 +66,7 @@ function ComparisonModalComponent({ offers, open, onClose }: ComparisonModalProp
     for (const o of offers) {
       if (!o.pricingBreakdown) continue
       for (const pb of o.pricingBreakdown) {
-        if (!pb.categoryCode) continue
+        if (!pb.categoryCode || !pb.guaranteeName) continue
         const list = allBreakdowns.get(pb.categoryCode) || []
         if (!list.some(e => e.name === pb.guaranteeName)) {
           list.push({
@@ -129,7 +129,7 @@ function ComparisonModalComponent({ offers, open, onClose }: ComparisonModalProp
           }
         }
       }
-      for (const f of o.features) {
+      for (const f of o.features || []) {
         set.add(f)
         set.add(normalizeGuaranteeName(f))
         set.add(resolveCoverageName(f))
@@ -299,7 +299,7 @@ function ComparisonModalComponent({ offers, open, onClose }: ComparisonModalProp
                           {offer.insurerName}
                         </span>
                         <span className="text-xs text-muted-foreground capitalize">
-                          {offer.coverageType.replace(
+                          {(offer.coverageType || "").replace(
                             "_",
                             " "
                           )}
@@ -482,40 +482,42 @@ function ComparisonModalComponent({ offers, open, onClose }: ComparisonModalProp
                                   <TooltipTrigger
                                     asChild
                                   >
-                                    <span
-                                      className={`text-sm font-bold tabular-nums cursor-default ${
-                                        hasGuarantee
+                                    <span className="inline-block cursor-default">
+                                      <span
+                                        className={`text-sm font-bold tabular-nums ${
+                                          hasGuarantee
+                                            ? pricing
+                                              ? pricing.amount === 0
+                                                ? "text-green-600 dark:text-green-400"
+                                                : "text-foreground"
+                                              : "text-green-600 dark:text-green-400"
+                                            : "text-muted-foreground/40"
+                                        }`}
+                                      >
+                                        {hasGuarantee
                                           ? pricing
                                             ? pricing.amount === 0
-                                              ? "text-green-600 dark:text-green-400"
-                                              : "text-foreground"
-                                            : "text-green-600 dark:text-green-400"
-                                          : "text-muted-foreground/40"
-                                      }`}
-                                    >
-                                      {hasGuarantee
-                                        ? pricing
-                                          ? pricing.amount === 0
-                                            ? "Gratuit"
-                                            : formatFCFA(
-                                                pricing.amount
-                                              )
-                                          : "✓"
-                                        : "—"}
+                                              ? "Gratuit"
+                                              : formatFCFA(
+                                                  pricing.amount
+                                                )
+                                            : "✓"
+                                          : "—"}
+                                      </span>
+                                      {hasGuarantee &&
+                                        pricing &&
+                                        pricing.coverageCapital !=
+                                          null &&
+                                        pricing.coverageCapital >
+                                          0 && (
+                                          <span className="block text-[10px] text-muted-foreground/70 mt-0.5 font-normal">
+                                            Capital :{" "}
+                                            {formatFCFA(
+                                              pricing.coverageCapital
+                                            )}
+                                          </span>
+                                        )}
                                     </span>
-                                    {hasGuarantee &&
-                                      pricing &&
-                                      pricing.coverageCapital !=
-                                        null &&
-                                      pricing.coverageCapital >
-                                        0 && (
-                                        <span className="block text-[10px] text-muted-foreground/70 mt-0.5 font-normal">
-                                          Capital :{" "}
-                                          {formatFCFA(
-                                            pricing.coverageCapital
-                                          )}
-                                        </span>
-                                      )}
                                   </TooltipTrigger>
                                   <TooltipContent
                                     side="bottom"

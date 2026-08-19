@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import {
-  Database, Plus, Download, Trash2, RotateCcw, Clock,
-  Calendar, CheckCircle, XCircle, Loader2, Layers,
+  Database, Plus, Download, Trash2, Clock,
+  Calendar, CheckCircle, XCircle, Loader2, Layers, Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -104,7 +104,7 @@ export function BackupsTab() {
     try {
       const res = await fetch("/api/admin/backups", { method: "POST" });
       if (res.ok) {
-        toast({ title: "Succès", description: "Sauvegarde créée avec succès." });
+        toast({ title: "Succès", description: "Export de sauvegarde créé. Vous pouvez le télécharger." });
         fetchBackups();
       } else {
         toast({ title: "Erreur", description: "Impossible de créer la sauvegarde.", variant: "destructive" });
@@ -151,19 +151,6 @@ export function BackupsTab() {
     }
   };
 
-  const handleRestore = async (id: string) => {
-    try {
-      const res = await fetch(`/api/admin/backups/${id}?action=restore`, { method: "POST" });
-      if (res.ok) {
-        toast({ title: "Succès", description: "Restauration lancée avec succès." });
-      } else {
-        toast({ title: "Erreur", description: "Impossible de restaurer.", variant: "destructive" });
-      }
-    } catch {
-      toast({ title: "Erreur", description: "Erreur réseau.", variant: "destructive" });
-    }
-  };
-
   const handleSaveSchedule = async () => {
     setSavingSchedule(true);
     try {
@@ -173,6 +160,10 @@ export function BackupsTab() {
         body: JSON.stringify({ schedule, enabled: schedule.enabled }),
       });
       if (res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data?.nextExecution) {
+          setSchedule((s) => ({ ...s, nextExecution: data.nextExecution }));
+        }
         toast({ title: "Succès", description: "Planification enregistrée." });
       } else {
         toast({ title: "Erreur", description: "Impossible d&apos;enregistrer.", variant: "destructive" });
@@ -403,30 +394,6 @@ export function BackupsTab() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm" disabled={b.status !== "COMPLETED"}>
-                              <RotateCcw className="h-3.5 w-3.5 mr-1" />
-                              Restaurer
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Confirmer la restauration</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Voulez-vous vraiment restaurer la sauvegarde <strong>{b.filename}</strong> ?
-                                Les données actuelles seront remplacées.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Annuler</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleRestore(b.id)}>
-                                Restaurer
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-
                         <Button
                           variant="outline"
                           size="sm"
@@ -493,27 +460,6 @@ export function BackupsTab() {
                     </Badge>
                   </div>
                   <div className="flex gap-2 pt-1">
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="flex-1" disabled={b.status !== "COMPLETED"}>
-                          <RotateCcw className="h-3.5 w-3.5 mr-1" />
-                          Restaurer
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Confirmer la restauration</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Voulez-vous vraiment restaurer cette sauvegarde ? Les données actuelles seront remplacées.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleRestore(b.id)}>Restaurer</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-
                     <Button
                       variant="outline"
                       size="sm"
@@ -568,6 +514,17 @@ export function BackupsTab() {
           {creating ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Plus className="h-4 w-4 mr-2" />}
           Nouvelle sauvegarde
         </Button>
+      </div>
+
+      {/* Note explicative */}
+      <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50/60 p-4 dark:border-blue-900 dark:bg-blue-950/20">
+        <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+        <p className="text-sm text-blue-800 dark:text-blue-300">
+          Chaque sauvegarde génère un <strong>export des données</strong> (fichier
+          téléchargeable) que vous pouvez conserver hors ligne. La base est hébergée
+          sur Supabase, qui assure également des sauvegardes automatiques au niveau de
+          l&apos;infrastructure ; la restauration se fait à ce niveau.
+        </p>
       </div>
 
       {/* Stats */}

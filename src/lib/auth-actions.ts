@@ -19,7 +19,35 @@ import { logAudit } from "@/lib/audit";
  * et l'ancien endpoint unique POST /api/auth (rétro-compatibilité).
  */
 
-const SITE_URL = () => process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+/**
+ * Détermine l'URL publique du site pour construire les liens envoyés par email
+ * (réinitialisation de mot de passe). En production, l'application tourne derrière
+ * un reverse-proxy (nginx / Caddy) : on privilégie donc l'origine RÉELLE de la
+ * requête (en-têtes `x-forwarded-*`) afin que le lien pointe toujours vers le
+ * domaine visité (ex. https://noli.ci) — même si la variable d'environnement
+ * NEXT_PUBLIC_SITE_URL n'a pas été positionnée sur le serveur.
+ *
+ * Priorité :
+ *   1. NEXT_PUBLIC_SITE_URL si elle est réellement configurée (≠ localhost) ;
+ *   2. l'origine dérivée des en-têtes de la requête (proxy) ;
+ *   3. en dernier recours, la valeur d'environnement ou localhost (dev).
+ *
+ * ⚠️ Le domaine résultant doit figurer dans la liste « Redirect URLs » du projet
+ * Supabase (Authentication → URL Configuration), sinon Supabase ignore ce
+ * paramètre et retombe sur son « Site URL ».
+ */
+function resolveSiteUrl(request: NextRequest): string {
+  const env = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, "");
+  if (env && !/localhost|127\.0\.0\.1/.test(env)) return env;
+
+  const proto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim() || "https";
+  const host =
+    request.headers.get("x-forwarded-host")?.split(",")[0]?.trim() ||
+    request.headers.get("host")?.trim();
+  if (host) return `${proto}://${host}`;
+
+  return env || "http://localhost:3000";
+}
 
 /**
  * Traduit l'erreur de `supabase.auth.signUp` en message français exploitable.
@@ -344,7 +372,7 @@ export async function forgotAction(request: NextRequest) {
 
     const supabase = await getSupabaseServerClient();
     await supabase.auth.resetPasswordForEmail(parsed.data.trim(), {
-      redirectTo: `${SITE_URL()}/mot-de-passe-oublie`,
+      redirectTo: `${resolveSiteUrl(request)}/mot-de-passe-oublie`,
     });
 
     // Réponse identique qu'il existe un compte ou non (pas d'énumération).
